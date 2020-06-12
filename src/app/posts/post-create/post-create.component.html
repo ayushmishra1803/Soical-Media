@@ -1,9 +1,41 @@
 <mat-card>
-<mat-form-field>
-<textarea matInput mat-autosize rows="6" [value]="newPost" #post>
+  <form (ngSubmit)="onAddPost(f)" #f="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        ngModel
+        name="title"
+        required
+        #title="ngModel"
+        placeholder="Post title"
+      />
+      <mat-error *ngIf="title.invalid">Please Add the title</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        mat-autosize
+        rows="4"
+        ngModel
+        name="content"
+        required
+        #content="ngModel"
+        placeholder="Post
+      content"
+      >
+      </textarea>
+      <mat-error *ngIf="content.invalid">Please Enter the Content</mat-error
+      ><br />
+    </mat-form-field>
 
-</textarea>
-</mat-form-field>
-<button mat-raised-button color="accent" (click)="onAddPost(post)"> Save Post</button>
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit"
+      [disabled]="f.invalid"
+    >
+      Save Post
+    </button>
+  </form>
 </mat-card>
-
