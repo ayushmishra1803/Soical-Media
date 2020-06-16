@@ -24,13 +24,19 @@ export class PostService {
     return this.postupdates.asObservable();
   }
   addPosts(title, content) {
+
     const temppost: Postinterface = {
       id:null,
       title: title,
       content: content,
     };
-    this.post.push(temppost);
-    this.postupdates.next([...this.post]);
+    this.hhtp.post<{message:string}>('http://localhost:3000/api/posts',temppost).subscribe((re)=>{
+      console.log(re.message);
+       this.post.push(temppost);
+       this.postupdates.next([...this.post]);
+
+    })
+
   }
   constructor(private hhtp: HttpClient) {}
 }
