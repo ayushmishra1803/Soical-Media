@@ -1,6 +1,7 @@
 import { Postinterface } from './../../interface/post/postinterface';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -12,11 +13,20 @@ export class PostService {
 
   getPosts() {
    this.hhtp
-     .get<{ message: string; post: Postinterface []}>(
+     .get<{ message: string; post: any}>(
        'http://localhost:3000/api/posts'
      )
-     .subscribe((postdata) => {
-       this.post=postdata.post;
+     .pipe(map((postData)=>{
+      return postData.post.map(post=>{
+        return{
+          title:post.title,
+          content:post.content,
+          id:post._id
+        }
+      })
+     }))
+     .subscribe((transformedpost) => {
+       this.post=transformedpost;
        this.postupdates.next([...this.post])
      });
   }
