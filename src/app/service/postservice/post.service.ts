@@ -40,18 +40,19 @@ export class PostService {
       content: content,
     };
     this.hhtp
-      .post<{ message: string }>('http://localhost:3000/api/posts', temppost)
+      .post<{ message: string,postid:string }>('http://localhost:3000/api/posts', temppost)
       .subscribe((re) => {
-        console.log(re.message);
-        this.post.push(temppost);
+       const postid= re.postid;
+       temppost.id = postid;
+       this.post.push(temppost);
         this.postupdates.next([...this.post]);
       });
   }
-  deletepost(id:string)
-  {
-    this.hhtp.delete('http://localhost:3000/api/posts'+id).subscribe(re=>{
-      console.log("delete");
-
+  deletepost(id) {
+    this.hhtp.delete('http://localhost:3000/api/posts/'+id).subscribe(() => {
+      const updatedpost=this.post.filter(post=>post.id !== id)
+      this.post=updatedpost
+      this.postupdates.next([...this.post])
     });
   }
   constructor(private hhtp: HttpClient) {}
