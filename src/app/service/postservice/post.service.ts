@@ -12,41 +12,47 @@ export class PostService {
   private postupdates = new Subject<Postinterface[]>();
 
   getPosts() {
-   this.hhtp
-     .get<{ message: string; post: any}>(
-       'http://localhost:3000/api/posts'
-     )
-     .pipe(map((postData)=>{
-      return postData.post.map(post=>{
-        return{
-          title:post.title,
-          content:post.content,
-          id:post._id
-        }
-      })
-     }))
-     .subscribe((transformedpost) => {
-       this.post=transformedpost;
-       this.postupdates.next([...this.post])
-     });
+    this.hhtp
+      .get<{ message: string; post: any }>('http://localhost:3000/api/posts')
+      .pipe(
+        map((postData) => {
+          return postData.post.map((post) => {
+            return {
+              title: post.title,
+              content: post.content,
+              id: post._id,
+            };
+          });
+        })
+      )
+      .subscribe((transformedpost) => {
+        this.post = transformedpost;
+        this.postupdates.next([...this.post]);
+      });
   }
   getpostupdatelistener() {
     return this.postupdates.asObservable();
   }
   addPosts(title, content) {
-
     const temppost: Postinterface = {
-      id:null,
+      id: null,
       title: title,
       content: content,
     };
-    this.hhtp.post<{message:string}>('http://localhost:3000/api/posts',temppost).subscribe((re)=>{
-      console.log(re.message);
-       this.post.push(temppost);
-       this.postupdates.next([...this.post]);
+    this.hhtp
+      .post<{ message: string }>('http://localhost:3000/api/posts', temppost)
+      .subscribe((re) => {
+        console.log(re.message);
+        this.post.push(temppost);
+        this.postupdates.next([...this.post]);
+      });
+  }
+  deletepost(id:string)
+  {
+    this.hhtp.delete('http://localhost:3000/api/posts'+id).subscribe(re=>{
+      console.log("delete");
 
-    })
-
+    });
   }
   constructor(private hhtp: HttpClient) {}
 }

@@ -41,9 +41,15 @@ app.get("/api/posts", (req, res, next) => {
     res.json({
       message: 'Post Fetch Successfully',
       post: re
-
-
     });
+  })
+
+  app.delete("/api/posts/:id" ,(req,res,next)=>{
+    Post.deleteOne({_id:req.params.id}).then(re=>{
+      console.log(re);
+      res.status(200).json({message:"Post delete"})
+
+    })
   })
 
 
