@@ -7,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {path:'',component:PostListComponent},
   {path:'create',component:PostCreateComponent},
+  {path:'edit/:postId',component:PostCreateComponent}
 
 ];
 
