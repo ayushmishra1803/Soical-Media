@@ -57,7 +57,17 @@ Post.updateOne({_id:req.params.id},post).then(re=>{
 })
 })
 
-
+app.get("/api/posts:id",(req,res,next)=>{
+  Post.findById(re.params.id).then(post=>{
+    if(post)
+    {
+      res.status(200).json(post);
+    }
+    else{
+      res.status(404).json({message:"Post Not Found"})
+    }
+  })
+})
 
 
 app.get("/api/posts", (req, res, next) => {
