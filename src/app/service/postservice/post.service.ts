@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,7 @@ export class PostService {
         temppost.id = postid;
         this.post.push(temppost);
         this.postupdates.next([...this.post]);
+        this.Router.navigate(['/'])
       });
   }
   deletepost(id) {
@@ -58,9 +60,9 @@ export class PostService {
       this.postupdates.next([...this.post]);
     });
   }
-  constructor(private hhtp: HttpClient) {}
+
   getPost(id: string) {
-    return this.hhtp.get<{ _id: string,title: string,content: string }>(
+    return this.hhtp.get<{ _id: string; title: string; content: string }>(
       'http://localhost:3000/api/posts/' + id
     );
   }
@@ -74,6 +76,8 @@ export class PostService {
         UpdatedConstant[oldpostIndex] = post;
         this.post = UpdatedConstant;
         this.postupdates.next([...this.post]);
+         this.Router.navigate(['/']);
       });
   }
+  constructor(private hhtp: HttpClient,private Router:Router) {}
 }

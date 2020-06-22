@@ -12,6 +12,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class PostCreateComponent implements OnInit {
   private mode = 'create';
+  isloading=false
   private postid: string;
   post: Postinterface;
   constructor(
@@ -24,7 +25,9 @@ export class PostCreateComponent implements OnInit {
       if (params.has('postId')) {
         this.mode = 'edit';
         this.postid = params.get('postId');
+        this.isloading=true;
         this.postservice.getPost(this.postid).subscribe(data=>{
+          this.isloading=false;
           this.post={
             id:data._id,
             title:data.title,
@@ -38,6 +41,7 @@ export class PostCreateComponent implements OnInit {
     });
   }
   onSavePost(f: NgForm) {
+    this.isloading=true;
     if (this.mode === 'create') {
       this.postservice.addPosts(f.value.title, f.value.content);
       f.resetForm();
