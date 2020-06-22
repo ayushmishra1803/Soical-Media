@@ -60,6 +60,15 @@ export class PostService {
   }
   constructor(private hhtp: HttpClient) {}
   getPost(id:string){
-    return {...this.post.find(r=>{r.id === id})}
+    return {...this.post.find(r=>r.id === id)}
+  }
+  updatePost(id:string,title:string,content:string)
+  {
+    const post:Postinterface={id:id,title:title,content:content};
+    this.hhtp.put('http://localhost:3000/api/posts/' + id,post).subscribe(response=>{
+      console.log(response);
+
+    });
+
   }
 }
