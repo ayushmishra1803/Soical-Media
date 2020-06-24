@@ -9,8 +9,11 @@
       <button mat-stroked-button type="button" (click)="filepiker.click()">
         Pick Image
       </button>
-      <input type="file" #filepiker />
+      <input type="file" #filepiker (change)="onImagePicked($event)">
     </div>
+    <div class="image" *ngIf="imagePerview!==''&& imagePerview">
+      <img [src]="imagePerview"[alt]="form.value.title">
+      </div>
     <mat-form-field>
       <textarea
         matInput
