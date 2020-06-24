@@ -1,34 +1,26 @@
 <mat-card>
   <mat-spinner *ngIf="isloading"></mat-spinner>
-  <form (ngSubmit)="onSavePost(f)" #f="ngForm" *ngIf="!isloading">
+  <form [formGroup]="form"(ngSubmit)="onSavePost()" *ngIf="!isloading">
     <mat-form-field>
-      <input
-        matInput
-        type="text"
-        [ngModel]="post?.title"
-        name="title"
-        required
-        #title="ngModel"
-        placeholder="Post title"
-      />
-      <mat-error *ngIf="title.invalid">Please Add the title</mat-error>
+      <input matInput type="text"formControlName="title"  placeholder="Post title" />
+      <mat-error *ngIf="form.get('title').invalid">Please Add the title</mat-error>
     </mat-form-field>
     <div>
-      <button mat-stroked-button type="button" (click)="filepiker.click()">Pick Image</button>
-      <input type="file" #filepiker>
-      </div>
+      <button mat-stroked-button type="button" (click)="filepiker.click()">
+        Pick Image
+      </button>
+      <input type="file" #filepiker />
+    </div>
     <mat-form-field>
       <textarea
         matInput
+        formControlName="content"
         placeholder="Enter the Content"
         rows="4"
-        [ngModel]="post?.content"
         name="content"
-        required
-        #content="ngModel"
       >
       </textarea>
-      <mat-error *ngIf="content.invalid">Please Enter the Content</mat-error
+      <mat-error *ngIf="form.get('content').invalid">Please Enter the Content</mat-error
       ><br />
     </mat-form-field>
 
@@ -36,7 +28,7 @@
       mat-raised-button
       color="accent"
       type="submit"
-      [disabled]="f.invalid"
+
     >
       Save Post
     </button>
