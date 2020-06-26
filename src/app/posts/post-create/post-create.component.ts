@@ -1,3 +1,4 @@
+import { mimeType } from './../../validator/file/mimevalidator';
 import { Postinterface } from './../../interface/post/postinterface';
 import { PostService } from './../../service/postservice/post.service';
 
@@ -28,7 +29,7 @@ export class PostCreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)],
       }),
       content: new FormControl(null, { validators: Validators.required }),
-      image: new FormControl(null, { validators: Validators.required }),
+      image: new FormControl(null, { validators: [Validators.required],asyncValidators:[mimeType]}),
     });
     this.router.paramMap.subscribe((params: ParamMap) => {
       if (params.has('postId')) {
