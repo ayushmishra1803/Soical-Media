@@ -22,6 +22,8 @@ export class PostService {
               title: post.title,
               content: post.content,
               id: post._id,
+              imagePath:post.imagePath
+
             };
           });
         })
@@ -34,21 +36,26 @@ export class PostService {
   getpostupdatelistener() {
     return this.postupdates.asObservable();
   }
-  addPosts(title, content) {
-    const temppost: Postinterface = {
-      id: null,
-      title: title,
-      content: content,
-    };
+  addPosts(title, content,image : File) {
+    const postData=new FormData();
+    postData.append("title",title)
+    postData.append('content',content);
+    postData.append('image',image,title)
     this.hhtp
-      .post<{ message: string; postid: string }>(
+      .post<{ message: string; post: Postinterface }>(
         'http://localhost:3000/api/posts',
-        temppost
+       postData
       )
       .subscribe((re) => {
-        const postid = re.postid;
-        temppost.id = postid;
-        this.post.push(temppost);
+        const post :Postinterface={
+          id:re.post.id,
+          title:title,
+          content:content,
+          imagePath:re.post.imagePath
+
+        }
+
+        this.post.push(post);
         this.postupdates.next([...this.post]);
         this.Router.navigate(['/'])
       });
@@ -67,7 +74,7 @@ export class PostService {
     );
   }
   updatePost(id: string, title: string, content: string) {
-    const post: Postinterface = { id: id, title: title, content: content };
+    const post: Postinterface = { id: id, title: title, content: content,imagePath:null };
     this.hhtp
       .put('http://localhost:3000/api/posts/' + id, post)
       .subscribe((response) => {
