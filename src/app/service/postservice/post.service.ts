@@ -69,17 +69,33 @@ export class PostService {
   }
 
   getPost(id: string) {
-    return this.hhtp.get<{ _id: string; title: string; content: string }>(
+    return this.hhtp.get<{ _id: string; title: string; content: string,imagePath:string}>(
       'http://localhost:3000/api/posts/' + id
     );
   }
-  updatePost(id: string, title: string, content: string) {
-    const post: Postinterface = { id: id, title: title, content: content,imagePath:null };
+  updatePost(id: string, title: string, content: string,image:File |string) {
+    let postData:Postinterface|FormData;
+   if(typeof(image)==='object'){
+     postData =new FormData();
+     postData.append("id",id)
+    postData.append("title",title);
+    postData.append("content",content)
+    postData.append("image",image,title)
+   }
+   else{
+     postData={id:id,title:title,content:content,imagePath:image}
+   }
     this.hhtp
-      .put('http://localhost:3000/api/posts/' + id, post)
+      .put('http://localhost:3000/api/posts/' + id, postData)
       .subscribe((response) => {
         const UpdatedConstant = [...this.post];
-        const oldpostIndex = UpdatedConstant.findIndex((p) => p.id === post.id);
+        const oldpostIndex = UpdatedConstant.findIndex((p) => p.id === id);
+        const post: Postinterface = {
+          id: id,
+          title: title,
+          content: content,
+          imagePath: ""
+        };
         UpdatedConstant[oldpostIndex] = post;
         this.post = UpdatedConstant;
         this.postupdates.next([...this.post]);

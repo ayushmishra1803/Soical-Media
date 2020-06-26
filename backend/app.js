@@ -1,6 +1,7 @@
 // pass -  xcNM9iJvh4xODD3Q
 
 const express = require('express');
+const path=require('path')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const PostRoutes=require('./routes/posts')
@@ -15,6 +16,7 @@ mongoose.connect("mongodb+srv://ayush:xcNM9iJvh4xODD3Q@socailmedia-rdwr2.mongodb
 })
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images",express.static(path.join("backend/images")));
 
 
 app.use((req, res, next) => {
