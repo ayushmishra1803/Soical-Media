@@ -4,3 +4,4 @@ export interface Postinterface {
   content:string;
   imagePath:string
 }
+//ayush
