@@ -79,8 +79,16 @@ router.get("/:id", (req, res, next) => {
 
 
 router.get("", (req, res, next) => {
+  const pagesize= +req.query.pagesize;
+  const currentpage= +req.query.page;
+  const postQuery=Post.find();
+  if (pagesize && currentpage)
+  {
+    postQuery.skip(pagesize*(currentpage - 1)).limit(pagesize);
+  }
 
-  Post.find().then((re) => {
+
+  postQuery().then((re) => {
 
     res.json({
       message: 'Post Fetch Successfully',

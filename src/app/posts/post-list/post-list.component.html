@@ -1,12 +1,12 @@
 <mat-spinner *ngIf="isloading"></mat-spinner>
-<mat-accordion multi="true" *ngIf="posts.length > 0 && ! isloading"  >
+<mat-accordion multi="true" *ngIf="posts.length > 0 && !isloading">
   <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
       {{ post.title }}
     </mat-expansion-panel-header>
     <div class="post-image">
-      <img [src]="post.imagePath" [alt]="post.title">
-      </div>
+      <img [src]="post.imagePath" [alt]="post.title" />
+    </div>
     <p>{{ post.content }}</p>
     <mat-action-row>
       <a>
@@ -20,7 +20,11 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-
+<mat-paginator
+  [length]="totalpost"
+  [pageSize]="postperpage"
+  [pageSizeOptions]="pageSizeoptions"(page)="onChange($event)"
+></mat-paginator>
 <p class="infotext mat-body-1" *ngIf="posts.length <= 0 && !isloading">
   No post Yet!
 </p>

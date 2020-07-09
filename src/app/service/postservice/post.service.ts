@@ -12,7 +12,8 @@ export class PostService {
   private post: Postinterface[] = [];
   private postupdates = new Subject<Postinterface[]>();
 
-  getPosts() {
+  getPosts(PostParpage:number,currentpage:number) {
+    const queryParams = `?pagesize=${PostParpage}&page=${currentpage}`;
     this.hhtp
       .get<{ message: string; post: any }>('http://localhost:3000/api/posts')
       .pipe(
