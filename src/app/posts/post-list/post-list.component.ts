@@ -23,7 +23,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: Postinterface[] = [];
   ngOnInit(): void {
     this.isloading = true;
-    this.postservice.getPosts();
+    //this.postservice.getPosts();
+    //Error in Post Return
 
     this.postsub = this.postservice
       .getpostupdatelistener()
