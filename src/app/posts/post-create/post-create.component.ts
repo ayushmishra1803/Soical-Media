@@ -29,7 +29,10 @@ export class PostCreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)],
       }),
       content: new FormControl(null, { validators: Validators.required }),
-      image: new FormControl(null, { validators: [Validators.required],asyncValidators:[mimeType]}),
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType],
+      }),
     });
     this.router.paramMap.subscribe((params: ParamMap) => {
       if (params.has('postId')) {
@@ -42,12 +45,12 @@ export class PostCreateComponent implements OnInit {
             id: data._id,
             title: data.title,
             content: data.content,
-            imagePath:data.imagePath
+            imagePath: data.imagePath,
           };
           this.form.setValue({
             title: this.post.title,
             content: this.post.content,
-            image:this.post.imagePath
+            image: this.post.imagePath,
           });
         });
       } else {
@@ -71,7 +74,11 @@ export class PostCreateComponent implements OnInit {
   onSavePost() {
     this.isloading = true;
     if (this.mode === 'create') {
-      this.postservice.addPosts(this.form.value.title, this.form.value.content,this.form.value.image);
+      this.postservice.addPosts(
+        this.form.value.title,
+        this.form.value.content,
+        this.form.value.image
+      );
     } else {
       this.postservice.updatePost(
         this.postid,
